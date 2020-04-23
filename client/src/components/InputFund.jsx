@@ -49,7 +49,7 @@ const InputFund = () => {
 
   const searchInput = async () => {
     const res = await axios.get(
-      `https://cloud.iexapis.com/stable/search/${input}?token=pk_135e66691d174c4291a33989af3f52c9`
+      `https://cloud.iexapis.com/stable/search/aa?token=pk_135e66691d174c4291a33989af3f52c9`
     );
     await setFundInput({
       searchArray: res.data,
@@ -64,7 +64,7 @@ const InputFund = () => {
     } catch (error) {
       console.error(error);
     }
-    searchInput();
+    await searchInput();
   };
 
   const setInput = async (param) => {
@@ -120,7 +120,10 @@ const InputFund = () => {
       />
       <Autocomplete
         id='stockInput'
-        onChange={autoComplete}
+        onChange={(event, newValue) => {
+          setInput(newValue);
+        }}        
+        onInputChange={autoComplete}
         onSelect={getQuote}
         options={searchArray}
         getOptionLabel={(stock) => stock.symbol + ' ' + stock.securityName}
