@@ -39,7 +39,7 @@ class InputFund extends Component {
   searchInput = async () => {
     const { input } = this.state;
     const response = await fetch(
-      `https://cloud.iexapis.com/stable/search/${input}?token=sk_2fac0c511a7f481e85a5f5928838a339`
+      `https://cloud.iexapis.com/stable/search/${input}?token=pk_135e66691d174c4291a33989af3f52c9`
     );
     const data = await response.json();
     await this.setState({
