@@ -12,7 +12,7 @@ const InputFund = () => {
     input: '',
     searchArray: [],
     quote: 0,
-    pickedSecurity: {},
+    pickedSecurity: "",
     amountToInvest: 0,
     shareAmount: 0,
     columns: [
@@ -25,6 +25,7 @@ const InputFund = () => {
     ],
     data: [],
     fundName: '',
+    pickedSymbol: "", 
   })
 
   const {
@@ -56,7 +57,7 @@ const InputFund = () => {
     });
   };
 
-  const autoComplete = async (event) => {
+  const  autoComplete = async (event, param) => {
     try {
       await this.setState(
       {
@@ -69,6 +70,7 @@ const InputFund = () => {
     } catch(e){
       return e
     }
+  };
 
   const setInput = async (param) => {
     try {
@@ -122,11 +124,10 @@ const InputFund = () => {
         onChange={setFundName}
       />
       <Autocomplete
-        id='stockInput'
-        onChange={(event, newValue) => {
-          setInput(newValue);
-        }}        
-        onInputChange={autoComplete}
+        id='stockInput'     
+        onInputChange={(event, newValue) => {
+          autoComplete(event, newValue);
+        }}   
         onSelect={getQuote}
         options={searchArray}
         getOptionLabel={(stock) => stock.symbol + ' ' + stock.securityName}
