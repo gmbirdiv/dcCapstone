@@ -41,11 +41,13 @@ const InputFund = () => {
   } = fundInput;
 
   const getQuote = async () => {
+    
     try {
     const res = await axios.get(
-      `https://cloud.iexapis.com/stable/stock/${pickedSymbol}/quote/latestPrice?token=pk_135e66691d174c4291a33989af3f52c9`
+      `https://cloud.iexapis.com/stable/stock/msft/quote/latestPrice?token=pk_135e66691d174c4291a33989af3f52c9`
     );
     await setFundInput({
+      ...fundInput,
       quote: res.data,
     });
   } catch (e) {
@@ -62,15 +64,6 @@ const InputFund = () => {
       searchArray: res.data,
     });
   };
-
-  // const setInput = async (param) => {
-  //   try {
-  //     await setFundInput({
-  //       input: param.symbol,
-  //       pickedSecurity: param,
-  //     });
-  //   } catch {}
-  // };
 
   const amountToInvestInput = (event) => {
     setFundInput({
@@ -106,20 +99,27 @@ const InputFund = () => {
     });
   };
 
-    const  autoComplete = async (event, param) => {
-    // await searchInput()
+  const setInput = async (param) => {
+     setFundInput({
+        input: param.symbol,
+        pickedSecurity: param,
+        pickedSymbol: param.symbol
+      });
+  };
+
+  const  autoComplete = async (event) => {
      setFundInput(
       {
         ...fundInput,
-        input: event.target.value,
-        pickedSecurity: param.substr(param.indexOf(' '),param.length),
-        // pickedSymbol: param.substr(0,param.indexOf(' '))
-      }
+        input: event.target.value, 
+       
+      }, searchInput()
+
     );
-    await searchInput()
   
   };
 
+  // const [value, setValue] = React.useState(null);
   return (
     <div style={{ width: 800 }}>
       <TextField
@@ -129,11 +129,14 @@ const InputFund = () => {
         onChange={setFundName}
       />
       <Autocomplete
-        id='stockInput'     
-        onSelect={getQuote}
-        onInputChange={(event, newValue) => {
-          autoComplete(event,newValue);
-        }}  
+        id='stockInput'
+        freeSolo     
+        onClose={getQuote}
+        // inputValue={fundInput.input}
+        onChange = {(event, newValue)=> {
+          setInput(newValue)
+        }}
+        onInputChange={autoComplete}  
         options={searchArray}
         getOptionLabel={(stock) => stock.symbol + ' ' + stock.securityName}
         renderInput={(params) => (
