@@ -25,7 +25,7 @@ const InputFund = () => {
     ],
     data: [],
     fundName: '',
-    pickedSymbol: "", 
+    pickedSymbol: ""
   })
 
   const {
@@ -37,14 +37,15 @@ const InputFund = () => {
     shareAmount,
     fundName,
     data,
+    pickedSymbol
   } = fundInput;
 
   const getQuote = async () => {
     const res = await axios.get(
-      `https://cloud.iexapis.com/stable/stock/${input}/quote/latestPrice?token=pk_135e66691d174c4291a33989af3f52c9`
+      `https://cloud.iexapis.com/stable/stock/${pickedSymbol}/quote/latestPrice?token=pk_135e66691d174c4291a33989af3f52c9`
     );
     await setFundInput({
-      input: res.data,
+      quote: res.data,
     });
   };
 
@@ -130,9 +131,9 @@ const InputFund = () => {
         onInputChange={(event, newValue) => {
           autoComplete(event,newValue);
         }}   
-        // onSelect={getQuote}
+        onSelect={getQuote}
         options={searchArray}
-        getOptionLabel={(key) => key }
+        getOptionLabel={(stock) => stock.symbol + ' ' + stock.securityName}
         renderInput={(params) => (
           <TextField
             {...params}
