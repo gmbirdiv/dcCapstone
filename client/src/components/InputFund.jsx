@@ -51,7 +51,7 @@ const InputFund = () => {
 
   const searchInput = async () => {
     const res = await axios.get(
-      `https://cloud.iexapis.com/stable/search/aa?token=pk_135e66691d174c4291a33989af3f52c9`
+      `https://cloud.iexapis.com/stable/search/${input}?token=pk_135e66691d174c4291a33989af3f52c9`
     );
     await setFundInput({
       searchArray: res.data,
@@ -63,7 +63,7 @@ const InputFund = () => {
     try {
       await setFundInput(
       {
-        input: event.target.value,
+        input: event.currentTarget.value,
         pickedSecurity: param.substr(param.indexOf(' '),param.length),
         pickedSymbol: param.substr(0,param.indexOf(' '))
       }
