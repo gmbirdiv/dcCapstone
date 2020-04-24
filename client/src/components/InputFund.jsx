@@ -11,7 +11,7 @@ const InputFund = () => {
   const [fundInput, setFundInput] = useState({
     input: '',
     searchArray: [],
-    newArray: ["hat", "car", "cat"],
+    newArray: [{hat: "hat"}, {car: "car"}, {cat: "cat"}],
     quote: 0,
     pickedSecurity: "",
     amountToInvest: 0,
@@ -133,7 +133,7 @@ const InputFund = () => {
         }}   
         // onSelect={getQuote}
         options={newArray}
-        getOptionLabel={(stock) => stock }
+        getOptionLabel={(key) => key }
         renderInput={(params) => (
           <TextField
             {...params}
