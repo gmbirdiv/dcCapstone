@@ -25,7 +25,7 @@ const InputFund = () => {
     ],
     data: [],
     fundName: '',
-  });
+  })
 
   const {
     input,
@@ -58,14 +58,17 @@ const InputFund = () => {
 
   const autoComplete = async (event) => {
     try {
-      await setFundInput({
+      await this.setState(
+      {
         input: event.target.value,
-      });
-    } catch (error) {
-      console.error(error);
+        pickedSecurity: param.substr(param.indexOf(' '),param.length),
+        pickedSymbol: param.substr(0,param.indexOf(' '))
+      },
+      this.searchInput
+    );
+    } catch(e){
+      return e
     }
-    await searchInput();
-  };
 
   const setInput = async (param) => {
     try {
@@ -191,6 +194,7 @@ const InputFund = () => {
       <Button variant='contained' color='primary'>
         Save Fund
       </Button>
+      <h1>hello</h1>
     </div>
   );
 };
