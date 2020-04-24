@@ -58,31 +58,14 @@ const InputFund = () => {
     });
   };
 
-  const  autoComplete = async (event, param) => {
-    await searchInput()
-    try {
-      await setFundInput(
-      {
-        input: event.currentTarget.value,
-        pickedSecurity: param.substr(param.indexOf(' '),param.length),
-        pickedSymbol: param.substr(0,param.indexOf(' '))
-      }
-    );
-    await searchInput()
-    } 
-    catch(e) {
-      return e
-    }
-  };
-
-  const setInput = async (param) => {
-    try {
-      await setFundInput({
-        input: param.symbol,
-        pickedSecurity: param,
-      });
-    } catch {}
-  };
+  // const setInput = async (param) => {
+  //   try {
+  //     await setFundInput({
+  //       input: param.symbol,
+  //       pickedSecurity: param,
+  //     });
+  //   } catch {}
+  // };
 
   const amountToInvestInput = (event) => {
     setFundInput({
@@ -116,6 +99,23 @@ const InputFund = () => {
     setFundInput({
       fundName: event.target.value,
     });
+  };
+
+    const  autoComplete = async (event, param) => {
+    await searchInput()
+    try {
+      await setFundInput(
+      {
+        input: event.target.value,
+        pickedSecurity: param.substr(param.indexOf(' '),param.length),
+        pickedSymbol: param.substr(0,param.indexOf(' '))
+      }
+    );
+    await searchInput()
+    } 
+    catch(e) {
+      return e
+    }
   };
 
   return (
