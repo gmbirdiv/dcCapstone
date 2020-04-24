@@ -9,7 +9,7 @@ import TableFooter from '@material-ui/core/TableFooter';
 
 const InputFund = () => {
   const [fundInput, setFundInput] = useState({
-    input: '',
+    input: "",
     searchArray: [],
     quote: 0,
     pickedSecurity: "",
@@ -41,12 +41,16 @@ const InputFund = () => {
   } = fundInput;
 
   const getQuote = async () => {
+    try {
     const res = await axios.get(
       `https://cloud.iexapis.com/stable/stock/${pickedSymbol}/quote/latestPrice?token=pk_135e66691d174c4291a33989af3f52c9`
     );
     await setFundInput({
       quote: res.data,
     });
+  } catch (e) {
+    return e
+  }
   };
 
   const searchInput = async () => {
@@ -54,6 +58,7 @@ const InputFund = () => {
       `https://cloud.iexapis.com/stable/search/${input}?token=pk_135e66691d174c4291a33989af3f52c9`
     );
     await setFundInput({
+      ...fundInput,
       searchArray: res.data,
     });
   };
@@ -102,20 +107,17 @@ const InputFund = () => {
   };
 
     const  autoComplete = async (event, param) => {
-    await searchInput()
-    try {
-      await setFundInput(
+    // await searchInput()
+     setFundInput(
       {
+        ...fundInput,
         input: event.target.value,
         pickedSecurity: param.substr(param.indexOf(' '),param.length),
-        pickedSymbol: param.substr(0,param.indexOf(' '))
+        // pickedSymbol: param.substr(0,param.indexOf(' '))
       }
     );
     await searchInput()
-    } 
-    catch(e) {
-      return e
-    }
+  
   };
 
   return (
@@ -128,10 +130,10 @@ const InputFund = () => {
       />
       <Autocomplete
         id='stockInput'     
+        onSelect={getQuote}
         onInputChange={(event, newValue) => {
           autoComplete(event,newValue);
-        }}   
-        onSelect={getQuote}
+        }}  
         options={searchArray}
         getOptionLabel={(stock) => stock.symbol + ' ' + stock.securityName}
         renderInput={(params) => (
@@ -140,6 +142,7 @@ const InputFund = () => {
             label='Select Company Ticker'
             margin='normal'
             variant='outlined'
+        
           />
         )}
       />
