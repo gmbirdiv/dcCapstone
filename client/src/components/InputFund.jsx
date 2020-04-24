@@ -11,6 +11,7 @@ const InputFund = () => {
   const [fundInput, setFundInput] = useState({
     input: '',
     searchArray: [],
+    newArray: ["hat", "car", "cat"],
     quote: 0,
     pickedSecurity: "",
     amountToInvest: 0,
@@ -37,6 +38,7 @@ const InputFund = () => {
     shareAmount,
     fundName,
     data,
+    newArray
   } = fundInput;
 
   const getQuote = async () => {
@@ -59,15 +61,16 @@ const InputFund = () => {
 
   const  autoComplete = async (event, param) => {
     try {
-      await this.setState(
+      await setFundInput(
       {
         input: event.target.value,
         pickedSecurity: param.substr(param.indexOf(' '),param.length),
         pickedSymbol: param.substr(0,param.indexOf(' '))
-      },
-      this.searchInput
+      }
     );
-    } catch(e){
+    // await searchInput()
+    } 
+    catch(e) {
       return e
     }
   };
@@ -126,11 +129,11 @@ const InputFund = () => {
       <Autocomplete
         id='stockInput'     
         onInputChange={(event, newValue) => {
-          autoComplete(event, newValue);
+          autoComplete(event,newValue);
         }}   
-        onSelect={getQuote}
-        options={searchArray}
-        getOptionLabel={(stock) => stock.symbol + ' ' + stock.securityName}
+        // onSelect={getQuote}
+        options={newArray}
+        getOptionLabel={(stock) => stock }
         renderInput={(params) => (
           <TextField
             {...params}
