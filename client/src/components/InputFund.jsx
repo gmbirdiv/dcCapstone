@@ -219,6 +219,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import MaterialTable from 'material-table';
 import TableFooter from '@material-ui/core/TableFooter';
+import { setRandomFallback } from 'bcryptjs';
 
 function InputFund(){
     const [input, setInput] = useState(''); 
@@ -227,19 +228,73 @@ function InputFund(){
     const [pickedSecurity, setPickedSecurity] = useState({}); 
     const [pickedSymbol, setPickedSymbol] = useState('');
     const [amountToInvest, setAmountToInvest] = useState(0); 
-    const [shareAmoutn, setShareAmount] = useState(0);
+    const [shareAmount, setShareAmount] = useState(0);
     const [data, setData] = useState([]); 
     const [fundName, setFundName] = useState(''); 
 
-    const handleInput = e => {
-        setInput(e.target.value)
+      const columns = [
+            { title: 'Security', field: 'security' },
+            { title: 'Ticker', field: 'ticker' },
+            { title: 'Amount', field: 'amount', type: 'numeric' },
+            { title: 'Price When Added', field: 'priceWhenAdded', type: 'numeric' },
+            { title: 'Date When Added', field: 'dateWhenAdded', type: 'date' },
+          ]
+
+    const handleInput = async (event) => {
+      setInput(event.target.value);
     }
 
-    const logtest = () => {
-      console.log(input)
+    const getQuote = async (event, newValue) => {
+      try {setInput(newValue.symbol)
+      setPickedSymbol(newValue.symbol)
+      setPickedSecurity(newValue.securityName)}catch {}
+      const response = await axios.get(
+        `https://cloud.iexapis.com/stable/stock/${input}/quote/latestPrice?token=pk_135e66691d174c4291a33989af3f52c9`
+      );
+      const data = response.data; 
+       setQuote(response.data);
     }
+    
+    useEffect(function effectFunction() {
+      async function getSearch(){
+        const response  = await axios.get(`https://cloud.iexapis.com/stable/search/${input}?token=pk_135e66691d174c4291a33989af3f52c9`
+        ); 
+        const data = await response.data 
+        setSearchArray(data);
+      }
+      getSearch();
+      
+    },[input])
 
-    // let searchArray = [{hat: "hat"}, {hat: "car"}, {hat: "bus"}];
+    useEffect(function effectFunction() {
+      async function getQuotes(){
+        const response  = await axios.get(`https://cloud.iexapis.com/stable/stock/${pickedSymbol}/quote/latestPrice?token=pk_135e66691d174c4291a33989af3f52c9`
+        ); 
+        const data = await response.data 
+        setQuote(data);
+      }
+      getQuotes();
+      
+    },[pickedSymbol])
+
+    useEffect(function effectFunction() {
+      async function shareAmountSetter(){
+        setShareAmount(amountToInvest / quote);
+      }
+      shareAmountSetter();
+      
+    },[amountToInvest])
+
+    const fundAdd = () => {
+    const newData = {
+      security: pickedSecurity,
+      ticker: pickedSymbol,
+      amount: amountToInvest,
+      priceWhenAdded: quote,
+      dateWhenAdded: new Date(),
+    };
+    setData([...data, newData]);
+  };
 
     return (
         <div style={{ width: 800 }}>
@@ -247,17 +302,14 @@ function InputFund(){
             id='fundName'
             label='Name your Fund'
             variant='outlined'
-            // onChange={this.setFundName}
+            onChange={setFundName}
           />
           <Autocomplete
             id='stockInput'
-            onChange={(event, newValue) => {
-              setInput(newValue.hat);
-            }}
-            // onSelect={this.getQuote}
+            onInputChange={handleInput}
+            onChange={getQuote}
             options={searchArray}
-            getOptionLabel={(option) => option.hat}
-            // getOptionLabel={(stock) => stock.symbol + ' ' + stock.securityName}
+            getOptionLabel={(stock) => stock.symbol + ' ' + stock.securityName}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -283,7 +335,7 @@ function InputFund(){
             id='amountToInvest'
             label='Amount to Invest'
             variant='outlined'
-            // onChange={this.amountToInvestInput}
+            onChange={(e) => setAmountToInvest(parseFloat(e.target.value))}
           />
           <br />
           <br />
@@ -291,20 +343,20 @@ function InputFund(){
             id='amountOfShares'
             label='Amount of Shares'
             variant='outlined'
-            // InputProps={{
-            //   readOnly: true,
-            // }}
-            // value={shareAmount}
+            InputProps={{
+              readOnly: true,
+            }}
+            value={shareAmount}
           />
           <br />
           <br />
-          {/* <Button onClick={this.onFundAdd} variant='contained' color='primary'>
+          <Button  onClick={fundAdd} variant='contained' color='primary'>
             Add Security
-          </Button> */}
-          {/* <MaterialTable
+          </Button>
+          <MaterialTable
             title={fundName}
-            columns={this.state.columns}
-            data={this.state.data}
+            columns={columns}
+            data={data}
             editable={{
               onRowDelete: (oldData) =>
                 new Promise((resolve) => {
@@ -318,14 +370,13 @@ function InputFund(){
                   }, 600);
                 }),
             }}
-          /> */}
+          />
             <Button variant='contained' color='primary'>
             Save Fund
           </Button>
         </div>
       );
     
-      logtest();
 }
 
 export default InputFund; 
