@@ -231,7 +231,6 @@ function InputFund(){
     const [shareAmount, setShareAmount] = useState(0);
     const [data, setData] = useState([]); 
     const [fundName, setFundName] = useState(''); 
-    const [prevState, setPrevState] = useState([]); 
 
 
       const columns = [
