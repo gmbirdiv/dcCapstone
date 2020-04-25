@@ -231,6 +231,8 @@ function InputFund(){
     const [shareAmount, setShareAmount] = useState(0);
     const [data, setData] = useState([]); 
     const [fundName, setFundName] = useState(''); 
+    const [prevState, setPrevState] = useState([]); 
+
 
       const columns = [
             { title: 'Security', field: 'security' },
@@ -362,10 +364,11 @@ function InputFund(){
                 new Promise((resolve) => {
                   setTimeout(() => {
                     resolve();
-                    this.setState((prevState) => {
-                      const data = [...prevState.data];
-                      data.splice(data.indexOf(oldData), 1);
-                      return { ...prevState, data };
+                    setData((prevState) => {
+                      console.log(prevState)
+                      const thedata = [...prevState];
+                      thedata.splice(thedata.indexOf(oldData), 1);
+                      return thedata
                     });
                   }, 600);
                 }),
