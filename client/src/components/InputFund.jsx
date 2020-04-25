@@ -303,7 +303,7 @@ function InputFund(){
             id='fundName'
             label='Name your Fund'
             variant='outlined'
-            onChange={setFundName}
+            onChange={(e)=> setFundName(e.target.value)}
           />
           <Autocomplete
             id='stockInput'
