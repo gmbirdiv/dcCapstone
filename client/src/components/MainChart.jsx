@@ -33,21 +33,12 @@ const useStyles = makeStyles({
 
 const MainChart = () => {
   const classes = useStyles();
-<<<<<<< HEAD
-  const [spchartData, setspChartData] = useState({});
-  const [ naschartData, setnasChartData] = useState({});
-  const [ diachartData, setdiaChartData] = useState({});
-  const [spchartMin, setspChartMin] = useState([0]);
-  const [naschartMin, setnasChartMin] = useState([0]);
-  const [diachartMin, setdiaChartMin] = useState([0]);
-=======
   const [spchartData, setspChartData] = useState([]);
   const [ naschartData, setnasChartData] = useState([]);
   const [ diachartData, setdiaChartData] = useState([]);
   const [spchartMin, setspchartMin] = useState(0); 
   const [diachartMin, setdiachartMin] = useState(0); 
   const [naschartMin, setnaschartMin] = useState(0); 
->>>>>>> 3831b8786408e69a1f9d2516a89471632504bdd0
 
 
   const [value, setValue] = React.useState(2);
@@ -67,15 +58,6 @@ const MainChart = () => {
             r[e.label] = e.average; 
         }
         return r
-<<<<<<< HEAD
-    }, {});
-    let minArray = Object.values(spchartData); 
-    let min = Math.min(...minArray) - 3; 
-    await setspChartMin(min)
-    await setspChartData(spchartData);
-  } catch {}
-}, []);
-=======
     }, {})
     let minArray = Object.values(spchartData); 
     let min = Math.min(...minArray) - 3; 
@@ -85,7 +67,6 @@ const MainChart = () => {
       );
     } catch {}
   }, []);
->>>>>>> 3831b8786408e69a1f9d2516a89471632504bdd0
   console.log(spchartData);
 
   useEffect(async () => {
@@ -102,15 +83,10 @@ const MainChart = () => {
      }, {})
      let minArray = Object.values(naschartData); 
      let min = Math.min(...minArray) - 3; 
-<<<<<<< HEAD
-     await setnasChartMin(min)
-     await setnasChartData(naschartData);
-=======
      await setnaschartMin(min)
       await setnasChartData(
         naschartData
       );
->>>>>>> 3831b8786408e69a1f9d2516a89471632504bdd0
     } catch {}
   }, []);
   console.log(naschartData);
@@ -120,11 +96,8 @@ const MainChart = () => {
       const res = await axios.get(
         "https://cloud.iexapis.com/stable/stock/dia/intraday-prices?token=pk_135e66691d174c4291a33989af3f52c9"
       );
-<<<<<<< HEAD
-=======
       const minutes = [];
       const prices = [];
->>>>>>> 3831b8786408e69a1f9d2516a89471632504bdd0
       let diachartData = res.data;
       diachartData = diachartData.reduce(function(r, e) {
          if(e.average !== null){
@@ -134,15 +107,10 @@ const MainChart = () => {
      }, {})
      let minArray = Object.values(diachartData); 
      let min = Math.min(...minArray) - 3; 
-<<<<<<< HEAD
-      await setdiaChartMin(min)
-      await setdiaChartData(diachartData);
-=======
      await setdiachartMin(min)
       await setdiaChartData(
         diachartData
       );
->>>>>>> 3831b8786408e69a1f9d2516a89471632504bdd0
     } catch {}
   }, []);
   console.log(diachartData);
@@ -188,11 +156,7 @@ const MainChart = () => {
       <CardContent>
         <h1 className="title">S&P 500</h1>
         <AreaChart
-<<<<<<< HEAD
-          data= {spchartData}
-=======
           data={spchartData}
->>>>>>> 3831b8786408e69a1f9d2516a89471632504bdd0
           min={spchartMin}
           points={false}
           xtitle="Time of day"
