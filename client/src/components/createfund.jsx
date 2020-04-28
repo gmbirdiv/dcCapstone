@@ -164,11 +164,7 @@ const ResponsiveDrawer = (props) => {
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <InputFund />
-<<<<<<< HEAD
-        {/* <MainChart/> */}
-=======
         <MainChart />
->>>>>>> f07efea55f3a9540b0451fc47be083680d7289a9
       </main>
     </div>
   );
