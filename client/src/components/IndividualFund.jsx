@@ -21,6 +21,7 @@ import PortfolioValue from "./PortfolioValue";
 import PortfolioGains from "./PortfolioGain";
 import DailyGain from "./DailyGain";
 import FundTable from "./fundTable";
+import FundGraph from "./FundGraph";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -149,6 +150,7 @@ const IndividualFund = (props) => {
             <PortfolioValue fund={fund} />
             <PortfolioGains fund={fund} />
             <DailyGain fund={fund} />
+            <FundGraph fund={fund} />
           </div>
         </CardContent>
         <CardActions disableSpacing>
